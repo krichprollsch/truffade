@@ -1,0 +1,20 @@
+{
+    "name": "krichprollsch/api-mock-server",
+    "description": "Programmable API mock server",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "domraider/rxnet": "^0.5.0",
+        "symfony/console": "^3.2"
+    },
+    "authors": [
+        {
+            "name": "Pierre Tachoire",
+            "email": "pierre.tachoire@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {"Krichprollsch\\MockServer\\": "src/"}
+    }
+}
