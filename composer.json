@@ -16,5 +16,6 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {"Krichprollsch\\MockServer\\": "src/"}
-    }
+    },
+    "bin": ["bin/mock-api"]
 }
