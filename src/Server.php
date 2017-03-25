@@ -5,6 +5,7 @@ use Rxnet\Httpd\Httpd;
 use Rxnet\Httpd\HttpdRequest as Request;
 use Rxnet\Httpd\HttpdResponse as Response;
 use Rxnet\Exceptions\InvalidJsonException;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Server
 {
@@ -17,6 +18,8 @@ class Server
     private $mocks;
     private $next;
 
+    private $resolver;
+
     public function __construct(int $mockPort = 8080, int $adminPort = 8081)
     {
         $this->mockPort = $mockPort;
@@ -24,6 +27,8 @@ class Server
 
         $this->mockServer = $this->configureMockServer();
         $this->adminServer = $this->configureAdminServer();
+
+        $this->resolver = $this->configureOptionsResolver();
     }
 
     public function start() :void
@@ -71,7 +76,14 @@ class Server
             'body' => $request->getBody(),
             'json' => $json,
         ];
-        $response->json($this->mocks[$this->next++]['response']);
+
+        $responseParamters = $this->mocks[$this->next++]['response'];
+
+        $response->json(
+            $responseParamters['body'],
+            $responseParamters['statusCode'],
+            $responseParamters['headers']
+        );
     }
 
     public function getMocksAction(Request $request, Response $response) :void
@@ -95,19 +107,22 @@ class Server
     {
         try {
             $body = $request->getJson();
+
+            $this->mocks[] = [
+                'response' => $this->resolver->resolve($body),
+                'request' => null,
+            ];
+
+            $response->json([
+                'total' => count($this->mocks),
+                'next' => $this->next,
+            ]);
         } catch (InvalidJsonException $e) {
-            $body = $request->getBody();
+            $response->json(
+                $e->getMessage(),
+                400
+            );
         }
-
-        $this->mocks[] = [
-            'response' => $body,
-            'request' => null,
-        ];
-
-        $response->json([
-            'total' => count($this->mocks),
-            'next' => $this->next,
-        ]);
     }
 
     private function configureMockServer() :Httpd
@@ -136,5 +151,18 @@ class Server
         $adminServer->route('POST', '/', [$this, 'setMockAction']);
 
         return $adminServer;
+    }
+
+    private function configureOptionsResolver(): OptionsResolver
+    {
+        $resolver = new OptionsResolver();
+
+        $resolver->setDefaults([
+            'body' => null,
+            'headers' => [],
+            'statusCode' => 200
+        ]);
+
+        return $resolver;
     }
 }
