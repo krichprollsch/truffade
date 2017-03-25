@@ -24,16 +24,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Krichprollsch\MockServer\Server;
+use Krichprollsch\Truffade\Server;
 
 (new Application('mock-api', '1.0.0'))
     ->register('mock-api')
-        ->addOption('admin-port', null, InputOption::VALUE_REQUIRED, 'Which port the admin server should listen')
-        ->addOption('mock-port', null, InputOption::VALUE_REQUIRED, 'Which port the mock server should listen')
+        ->addOption('admin-port', null, InputOption::VALUE_REQUIRED, 'Which port the admin server should listen', 8081)
+        ->addOption('mock-port', null, InputOption::VALUE_REQUIRED, 'Which port the mock server should listen', 8080)
         ->setCode(function (InputInterface $input, OutputInterface $output) {
             (new Server(
-                (int) $input->getOption('mock-port') ?: 8080,
-                (int) $input->getOption('admin-port') ?: 8081
+                (int) $input->getOption('mock-port'),
+                (int) $input->getOption('admin-port')
             ))->start();
         })
     ->getApplication()

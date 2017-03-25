@@ -1,5 +1,5 @@
 {
-    "name": "krichprollsch/api-mock-server",
+    "name": "krichprollsch/truffade",
     "description": "Programmable API mock server",
     "type": "project",
     "license": "MIT",
@@ -16,7 +16,7 @@
     ],
     "minimum-stability": "stable",
     "autoload": {
-        "psr-4": {"Krichprollsch\\MockServer\\": "src/"}
+        "psr-4": {"Krichprollsch\\Truffade\\": "src/"}
     },
     "bin": ["bin/mock-api"]
 }

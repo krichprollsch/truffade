@@ -1,5 +1,5 @@
 <?php
-namespace Krichprollsch\MockServer;
+namespace Krichprollsch\Truffade;
 
 use Rxnet\Httpd\Httpd;
 use Rxnet\Httpd\HttpdRequest as Request;
