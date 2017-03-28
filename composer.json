@@ -18,5 +18,5 @@
     "autoload": {
         "psr-4": {"Krichprollsch\\Truffade\\": "src/"}
     },
-    "bin": ["bin/mock-api"]
+    "bin": ["bin/truffade"]
 }
