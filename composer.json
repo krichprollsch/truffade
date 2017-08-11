@@ -4,7 +4,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "domraider/rxnet": "^0.5.0",
+        "domraider/rxnet": "^0.6",
         "symfony/console": "^3.2",
         "symfony/options-resolver": "^3.2"
     },
